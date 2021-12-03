@@ -3,41 +3,125 @@
 open System
 open System.IO
 
-let readLines (filePath:string) = [|
-    use sr = new StreamReader (filePath)
-    while not sr.EndOfStream do
-        let s = sr.ReadLine ()
-        yield int s
-|]
+let binNot (c:char) =
+    if c='1' then
+        '0'
+    else
+        '1'
 
-let parseLine (input:string) =
-    let split = input.Split [|' '|]
-    let direction, dist = split.[0], int split.[1]
-    (direction, dist) 
+let rec reversedbinToInt s =
+    match s with 
+    |['1']|['0'] ->int s.[0] - int '0';
+    |x::xs -> (int x - int '0') + (reversedbinToInt xs )* 2
 
+
+let part1 = 
+
+    let mutable lines = Seq.toList (IO.File.ReadLines "..\..\..\inputs\day3.txt")
+    let n = String.length lines.[0]
+    let m = lines.Length
+    let mutable gammaBin = ""
+
+    for i in 0..n-1 do
+        let ones =
+            lines
+            |> Seq.toList
+            |> List.map(fun s -> s.[i])
+            |> List.filter(fun c -> c='1')
+        if ones.Length > m/2 then
+            gammaBin <- gammaBin + "1"
+        else 
+            gammaBin <- gammaBin + "0"
+
+    let gamma = 
+       gammaBin
+       |> Seq.toList
+       |> List.rev
+    let epsilon = 
+        gamma
+        |> List.map(binNot)
+    
+    let gammaValue = reversedbinToInt gamma
+    let epsilonValue = reversedbinToInt epsilon
+    let result = gammaValue*epsilonValue
+
+    printfn "%d*%d = %d" gammaValue epsilonValue result
+
+    
 [<EntryPoint>]
 let main argv =
+    let lines = Seq.toList (IO.File.ReadLines "..\..\..\inputs\day3.txt")
+    let n = String.length lines.[0]
 
-    let lines = IO.File.ReadLines "input.txt"
-    let course = 
-        lines
-       |> Seq.map parseLine 
+    let mutable workinglines = lines;
+    let mutable i = 0;
+    let mutable oxigen = "";
+    let mutable co2 = "";
+    while i<n do
+        let ones =
+            workinglines
+            |> Seq.toList
+            |> List.map(fun s -> s.[i])
+            |> List.filter(fun c -> c='1')
+        let zeros =
+            workinglines
+            |> Seq.toList
+            |> List.map(fun s -> s.[i])
+            |> List.filter(fun c -> c='0')
+        if ones.Length >= zeros.Length then
+            workinglines <-
+                workinglines
+                |> List.filter(fun s -> s.[i] = '1')
+        else 
+            workinglines <-
+                workinglines
+                |> List.filter(fun s -> s.[i] = '0')
 
-    let mutable distance = 0
-    let mutable depth = 0
-    let mutable aim = 0
-
-    for step in course do
-        let d = snd step
-        if (fst step).Equals("forward") then
-            distance <- distance + d
-            depth <- depth + aim*d
-        elif (fst step).Equals("up") then
-            aim <- aim - d
+        if workinglines.Length = 1 then
+            i <- n
+            oxigen <- workinglines.[0]
         else
-            aim <- aim + d
+            i <- i+1
 
-    let result = depth*distance
-    printf "%d" result
+    i <- 0
+    workinglines <- lines;
+    while i<n do
+        let ones =
+            workinglines
+            |> Seq.toList
+            |> List.map(fun s -> s.[i])
+            |> List.filter(fun c -> c='1')
+        let zeros =
+            workinglines
+            |> Seq.toList
+            |> List.map(fun s -> s.[i])
+            |> List.filter(fun c -> c='0')
+        if ones.Length < zeros.Length then
+            workinglines <-
+                workinglines
+                |> List.filter(fun s -> s.[i] = '1')
+        else 
+            workinglines <-
+                workinglines
+                |> List.filter(fun s -> s.[i] = '0')
+        
+        if workinglines.Length = 1 then
+            i <- n
+            co2 <- workinglines.[0]
+        else
+            i <- i+1
 
+    let oValue = 
+        oxigen
+        |> Seq.toList
+        |> List.rev
+        |> reversedbinToInt
+    let co2Value = 
+        co2
+        |> Seq.toList
+        |> List.rev
+        |> reversedbinToInt
+    let result = oValue * co2Value
+
+    printfn "%d*%d = %d" oValue co2Value result
     0 // return an integer exit code
