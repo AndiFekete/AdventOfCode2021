@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="days\day4.fs" />
+    <Compile Include="days\day3.fs" />
     <None Include="days\day2.fs" />
     <Compile Include="days\day1.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
-  <ItemGroup />
 
 </Project>
