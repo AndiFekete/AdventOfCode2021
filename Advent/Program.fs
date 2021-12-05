@@ -2,12 +2,11 @@
 
 open System
 open System.IO
-open day4
+open day5
 
 
     
 [<EntryPoint>]
 let main argv =
-    day4.part1
-    day4.part2
+    day5.part2
     0 // return an integer exit code

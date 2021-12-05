@@ -1,12 +1,10 @@
 ﻿module day4
 
-open System.IO
+open common
 
 type BingoBoard = List<List<string>>
 type BingoBoards = List<BingoBoard>
 
-let readInput (fileName:string) =
-    Seq.toList (File.ReadAllLines fileName)
 
 let parseInput (input:List<string>) =
     let numbers = input.[0].Split [|','|]
