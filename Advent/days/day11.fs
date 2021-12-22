@@ -2,10 +2,6 @@
 
 open common
 
-let addborder arraymap = 
-    let withsides = arraymap |> Array.map (fun line -> Array.append (Array.append [|-1|] line) [|-1|])
-    Array.append [|[| for i in 0..11 -> -1 |]|]  (Array.append withsides [|[| for i in 0..11 -> -1|]|])
-
 let rec makeGlow (octopi:int[][]) sources =
     match sources with
     | (n,m)::tail -> let mutable s = tail 
@@ -43,7 +39,7 @@ let countZero (map:int[][]) =
     map |> Array.map (fun row -> (row |> Array.filter (fun i -> i = 0) |> Array.length)) |> Array.sum
 
 let part1 =
-    let mutable octopi = (readInput "..\..\..\inputs\day11.txt") |> List.map (fun line -> (Seq.toArray line) |> Array.map (fun c -> int c - int '0') )|> List.toArray |> addborder
+    let mutable octopi = (readInput "..\..\..\inputs\day11.txt") |> List.map (fun line -> (Seq.toArray line) |> Array.map (fun c -> int c - int '0') )|> List.toArray |> common.addborder -1
     let mutable result = 0
     for i in 0..99 do
         octopi <- step octopi
@@ -58,6 +54,6 @@ let rec getStepWhenAllZero (octopi:int[][]) n =
     |_ -> n
 
 let part2 =
-    let mutable octopi = (readInput "..\..\..\inputs\day11.txt") |> List.map (fun line -> (Seq.toArray line) |> Array.map (fun c -> int c - int '0') )|> List.toArray |> addborder
+    let mutable octopi = (readInput "..\..\..\inputs\day11.txt") |> List.map (fun line -> (Seq.toArray line) |> Array.map (fun c -> int c - int '0') )|> List.toArray |> common.addborder -1
     let n = getStepWhenAllZero octopi 0
     printfn "%d" n

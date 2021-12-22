@@ -8,6 +8,15 @@
 
   <ItemGroup>
     <Compile Include="days\common.fs" />
+    <Compile Include="days\day21.fs" />
+    <Compile Include="days\day20.fs" />
+    <Compile Include="days\day18.fs" />
+    <Compile Include="days\day17.fs" />
+    <Compile Include="days\day16.fs" />
+    <Compile Include="days\day15.fs" />
+    <Compile Include="days\day14.fs" />
+    <Compile Include="days\day13.fs" />
+    <Compile Include="days\day11.fs" />
     <Compile Include="days\day10.fs" />
     <Compile Include="days\day09.fs" />
     <Compile Include="days\day07.fs" />
